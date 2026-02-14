@@ -11,6 +11,9 @@
 # Ваше завдання - розробити функцію total_salary(path), яка аналізує цей файл і повертає загальну 
 # та середню суму заробітної плати всіх розробників.
 
+import sys
+
+
 def total_salary(path):
     with open(path, "r") as file:
         total = 0
@@ -70,15 +73,44 @@ def get_cats_info(path):
 # Скрипт має коректно відображати як імена директорій, так і імена файлів, використовуючи рекурсивний спосіб обходу директорій (можна, за бажанням, використати не рекурсивний спосіб).
 # Повинна бути перевірка та обробка помилок, наприклад, якщо вказаний шлях не існує або він не веде до директорії.
 
+from colorama import Fore, Style
+import os
+import sys
+
+def visualize_directory_structure(path, indent=0):
+    if not os.path.exists(path):
+        print(f"{Fore.RED}Error: Такого шляху не існує.{Style.RESET_ALL}")
+        return
+    if not os.path.isdir(path):
+        print(f"{Fore.RED}Error: Вказаний шлях не є директорією.{Style.RESET_ALL}")
+        return
+
+    for item in os.listdir(path):
+        item_path = os.path.join(path, item)
+        if os.path.isdir(item_path):
+            print(f"{' ' * indent}{Fore.BLUE}{item}/ {Style.RESET_ALL}")
+            visualize_directory_structure(item_path, indent + 4)
+        else:
+            print(f"{' ' * indent}{Fore.GREEN}{item} {Style.RESET_ALL}")
+    
+
 
 
 
 if(__name__ == "__main__"):
-    total, average = total_salary("salaries.txt")
-    print(f"Total Salary: {total}")
-    print(f"Average Salary: {average}")
+    # uncomment the code below to test the functions for task 1 and task 2
 
-    cats_info = get_cats_info("cats_data.txt")
-    print("Cats Info:")
-    for cat in cats_info:
-        print(cat)
+    # # tast 1
+    # total, average = total_salary("salaries.txt")
+    # print(f"Total Salary: {total}")
+    # print(f"Average Salary: {average}")
+
+    # # task 2
+    # cats_info = get_cats_info("cats_data.txt")
+    # print("Cats Info:")
+    # for cat in cats_info:
+    #     print(cat)
+    
+    # import os
+
+    visualize_directory_structure(sys.argv[1])
